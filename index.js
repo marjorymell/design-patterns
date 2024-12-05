@@ -1,26 +1,16 @@
-import sys from 'node:sys';
-
-import FormaterHTML from './src/FormaterHTML.js';
-import FormaterTXT from './src/FormaterTXT.js';
-import CitiesReporter from './src/CitiesReporter.js';
+import FormaterFactory from "./src/factories/FormaterFactory.js";
+import CitiesReporter from "./src/CitiesReporter.js";
 
 const [cmd, script, param1] = process.argv,
-      filename = './data/cidades-2.json';
+  filename = "./data/cidades-2.json";
 
-const formaterStrategies = {
-  'html': new FormaterHTML(),
-  'txt': new FormaterTXT()
-};
+try {
+  const formaterStrategy = FormaterFactory.createFormater(param1);
+  const reporter = new CitiesReporter({ formaterStrategy });
+  const output = reporter.report(filename);
 
-let reporter = new CitiesReporter({
-      formaterStrategy: formaterStrategies[param1]
-    }),
-    output = reporter.report(filename);
-
-console.log(output);
-
-
-
-
-
-
+  console.log(output);
+} catch (error) {
+  console.error("Error:", error.message);
+  process.exit(1);
+}
