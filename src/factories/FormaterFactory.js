@@ -3,7 +3,7 @@ import FormaterTXT from "../formatters/FormaterTXT.js";
 
 export default class FormaterFactory {
   static createFormater(type) {
-    switch (type) {
+    switch (type.toLowerCase()) {
       case "html":
         return new FormaterHTML();
       case "txt":

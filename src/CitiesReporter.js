@@ -1,27 +1,14 @@
-import fs from 'node:fs';
+import ReaderFactory from "./factories/ReaderFactory.js";
 
 export default class CitiesReporter {
-  constructor ({ formaterStrategy }) {
+  constructor({ formaterStrategy }) {
     this._formaterStrategy = formaterStrategy;
   }
 
-  _read (filename) {
-    this._cities_json = fs.readFileSync(filename);
-  }
-
-  _parseJSON () {
-    this._cities = JSON.parse(this._cities_json);
-  }
-
-  report (filename) {
-    this._read(filename);
-    this._parseJSON();
+  async report(filename) {
+    const fileType = filename.split(".").pop().toLowerCase();
+    const reader = ReaderFactory.createReader(fileType);
+    this._cities = await reader.read(filename);
     return this._formaterStrategy.output(this._cities);
   }
-
 }
-
-
-
-
-
