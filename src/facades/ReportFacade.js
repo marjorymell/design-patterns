@@ -1,12 +1,14 @@
-import FormaterFactory from "../factories/FormaterFactory.js";
-import CitiesReporter from "../CitiesReporter.js";
+import ReportConfigurator from "./ReportConfigurator.js";
 
 export default class ReportFacade {
   static async generateReport(format, filename) {
     try {
-      const formaterStrategy = FormaterFactory.createFormater(format);
-      const reporter = new CitiesReporter({ formaterStrategy });
-      return await reporter.report(filename);
+      const { formaterStrategy, reader } = ReportConfigurator.configure(
+        format,
+        filename
+      );
+      const cities = await reader.read(filename);
+      return formaterStrategy.output(cities);
     } catch (error) {
       console.error("Error generating report:", error.message);
       throw error;
