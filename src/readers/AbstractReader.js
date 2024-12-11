@@ -1,5 +1,5 @@
 export default class AbstractReader {
-  read(filename) {
-    throw new Error("Should implement read method");
+  async read(filename) {
+    return Promise.reject(new Error("Should implement read method"));
   }
 }
