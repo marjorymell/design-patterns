@@ -1,9 +1,14 @@
+import { Command } from "./Command.js";
+
 export class CommandInvoker {
   constructor() {
     this.commands = [];
   }
 
   addCommand(command) {
+    if (!(command instanceof Command)) {
+      throw new Error("Command must extend the Command class");
+    }
     this.commands.push(command);
   }
 
