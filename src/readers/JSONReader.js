@@ -1,3 +1,7 @@
+import AbstractReader from "./AbstractReader.js";
+
+import fs from "fs";
+
 export default class JSONReader extends AbstractReader {
   async read(filename) {
     return new Promise((resolve, reject) => {
