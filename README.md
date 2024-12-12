@@ -4,6 +4,12 @@
 
 Este projeto tem como objetivo implementar três padrões de projeto, abrangendo as três categorias principais: **criacional**, **estrutural** e **comportamental**. Além disso, três refatorações foram realizadas seguindo os princípios do **SOLID**. O projeto é baseado no [repositório template](https://github.com/watinha/es46a-2023-2/tree/strategy/01-design-patterns-template-strategy).
 
+## Diagrama do Projeto
+
+Abaixo está o diagrama que ilustra a estrutura do projeto:
+
+![Diagrama do Projeto](src/assets/imgs/diagrama.png)
+
 ## Padrões de Projeto Utilizados
 
 ### **1. Padrão Command**
