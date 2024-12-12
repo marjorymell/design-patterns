@@ -1,4 +1,4 @@
-import ReportConfigurator from "./ReportConfigurator";
+import ReportConfigurator from "./ReportConfigurator.js";
 
 export default class ReportFacade {
   static async generateReport(format, filename) {

@@ -1,35 +1,93 @@
-# Design Patterns
+# Design Patterns e Refatoração
 
-# Descrição do Projeto
+## Descrição do Projeto
 
-Este projeto tem como objetivo aplicar três padrões de projeto, abordando as três categorias principais: **criacional**, **estrutural** e **comportamental**. Além disso, serão realizadas três refatorações utilizando os princípios do **SOLID**. O projeto usará como base este [repositório](https://github.com/watinha/es46a-2023-2/tree/strategy/01-design-patterns-template-strategy).
+Este projeto tem como objetivo implementar três padrões de projeto, abrangendo as três categorias principais: **criacional**, **estrutural** e **comportamental**. Além disso, três refatorações foram realizadas seguindo os princípios do **SOLID**. O projeto é baseado no [repositório template](https://github.com/watinha/es46a-2023-2/tree/strategy/01-design-patterns-template-strategy).
 
-## Diagrama do Projeto
+## Padrões de Projeto Utilizados
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vestibulum iaculis vestibulum. Sed luctus, nisl a tempus eleifend, odio libero pulvinar risus, ac laoreet mi orci sit amet nibh. Donec vitae mollis nisi. Curabitur ultrices libero elit, vel ornare metus rhoncus in. Aenean in felis ullamcorper, finibus sem et, convallis mi. Sed mollis eu nulla ut finibus. Nulla facilisi. Aliquam vitae felis erat. Pellentesque fermentum arcu eu ligula efficitur, vitae sollicitudin urna aliquet. Aenean vitae sodales sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus porta volutpat mi, ac suscipit lorem vulputate ut. 
+### **1. Padrão Command**
 
-## Padrões de Projetos Utilizados
+- **Definição**: Permite encapsular uma solicitação como um objeto, promovendo a parametrização de objetos com diferentes solicitações e o enfileiramento ou registro de operações.
+- **Como foi implementado**:
+  - A classe `Command` define uma interface base com o método `execute`, implementado pelas subclasses.
+  - Os comandos concretos, como `GenerateHTMLReportCommand` e `GenerateTXTReportCommand`, encapsulam a lógica específica para gerar relatórios em diferentes formatos (HTML e TXT).
+  - O `CommandInvoker` gerencia a fila de comandos e executa cada comando em sequência.
+- **Benefícios**:
+  - Segue o Princípio da Inversão de Dependência (DIP), desacoplando quem solicita a operação de quem a executa.
+  - Facilita a extensibilidade para novos comandos.
 
-### **1. Padrão Factory Method**
+### **2. Padrão Factory Method**
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vestibulum iaculis vestibulum. Sed luctus, nisl a tempus eleifend, odio libero pulvinar risus, ac laoreet mi orci sit amet nibh. Donec vitae mollis nisi. Curabitur ultrices libero elit, vel ornare metus rhoncus in. Aenean in felis ullamcorper, finibus sem et, convallis mi. Sed mollis eu nulla ut finibus. Nulla facilisi. Aliquam vitae felis erat. Pellentesque fermentum arcu eu ligula efficitur, vitae sollicitudin urna aliquet. Aenean vitae sodales sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus porta volutpat mi, ac suscipit lorem vulputate ut. 
+- **Definição**: Define uma interface para criar objetos em uma superclasse, permitindo que subclasses decidam quais objetos criar.
+- **Como foi implementado**:
+  - A classe `FormaterFactory` é usada para criar instâncias de formatadores (`FormaterHTML`, `FormaterTXT`) com base no tipo solicitado.
+  - A classe `ReaderFactory` cria instâncias de leitores (`JSONReader`, `CSVReader`) com base na extensão do arquivo.
+- **Benefícios**:
+  - Segue o Princípio da Responsabilidade Única (SRP) ao centralizar a lógica de criação de objetos.
+  - Evita o acoplamento direto entre o `ReportFacade` e implementações específicas.
 
-#### **Motivo da Escolha do Factory Method:**
+### **3. Padrão Facade**
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vestibulum iaculis vestibulum. Sed luctus, nisl a tempus eleifend, odio libero pulvinar risus, ac laoreet mi orci sit amet nibh. Donec vitae mollis nisi. Curabitur ultrices libero elit, vel ornare metus rhoncus in. Aenean in felis ullamcorper, finibus sem et, convallis mi. Sed mollis eu nulla ut finibus. Nulla facilisi. Aliquam vitae felis erat. Pellentesque fermentum arcu eu ligula efficitur, vitae sollicitudin urna aliquet. Aenean vitae sodales sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus porta volutpat mi, ac suscipit lorem vulputate ut. 
+- **Definição**: Fornece uma interface simplificada para um conjunto de interfaces em um subsistema, reduzindo a complexidade para o cliente.
+- **Como foi implementado**:
+  - A classe `ReportFacade` atua como a interface principal para gerar relatórios, escondendo a complexidade de configuração e integração com formatadores e leitores.
+  - Internamente, utiliza o `ReportConfigurator` para configurar as dependências necessárias.
+- **Benefícios**:
+  - Simplifica a interface para os usuários finais.
+  - Segue o Princípio da Responsabilidade Única (SRP) ao delegar a configuração de dependências.
 
+## Refatorações
 
-## Como Executar
+### **1. Princípio da Responsabilidade Única (SRP)**
 
-Para iniciar o gerenciador de contatos, execute o seguinte comando no terminal:
+- Criada a classe `ReportConfigurator` para delegar a configuração de dependências, removendo essa lógica do `ReportFacade`.
+- **Impacto**:
+  - Melhor modularidade.
+  - Facilita a manutenção e extensibilidade.
 
-1. Clone o repositório na sua máquina local:
+### **2. Princípio de Substituição de Liskov (LSP)**
+
+- Garantido que todas as subclasses de `AbstractReader` retornem uma `Promise` no método `read`, permitindo comportamento consistente.
+- **Impacto**:
+  - Melhor consistência entre implementações.
+  - Facilita a adição de novos tipos de leitores.
+
+### **3. Princípio da Inversão de Dependência (DIP)**
+
+- O `CommandInvoker` trabalha exclusivamente com a classe base `Command`, sem depender diretamente de comandos concretos.
+- **Impacto**:
+
+  - Aumenta a robustez do sistema.
+  - Reforça o acoplamento com a abstração.
+
+  ## Como Executar
+
+1. Clone o repositório:
 
    ```bash
    git clone https://github.com/marjorymell/design-patterns
    ```
 
-2. Abra o terminal e rode `node index.js` para instalar as dependências necessárias.
+2. Navegue até a pasta do projeto:
 
+   ```bash
+   cd design-patterns
+   ```
 
+3. Execute um dos dois scripts:
 
+   ```bash
+   node index.js
+   ```
+
+   ```bash
+   npm start
+   ```
+
+4. O programa irá solicitar que você:
+
+   - Escolha o arquivo de entrada (é possível selecionar entre `cidades-1.json`, `cidades-2.json` ou `cidades.csv`).
+   - Escolha o formato de saída do relatório (`html` ou `txt`).
+
+5. Após concluir as escolhas, o relatório será gerado e exibido no terminal.
