@@ -8,7 +8,7 @@ Este projeto tem como objetivo implementar três padrões de projeto, abrangendo
 
 Abaixo está o diagrama que ilustra a estrutura do projeto:
 
-![Diagrama do Projeto](src/assets/imgs/diagrama.png)
+![Diagrama do Projeto](src/assets/imgs/Diagrama.png)
 
 ## Padrões de Projeto Utilizados
 
